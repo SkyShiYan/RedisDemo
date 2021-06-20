@@ -3,7 +3,6 @@
 package v1
 
 import (
-	fmt "fmt"
 	errors "github.com/go-kratos/kratos/v2/errors"
 )
 
@@ -11,20 +10,15 @@ import (
 // is compatible with the kratos package it is being compiled against.
 const _ = errors.SupportPackageIsVersion1
 
-func IsUserNotFound(err error) bool {
-	e := errors.FromError(err)
-	return e.Reason == ErrorReason_USER_NOT_FOUND.String() && e.Code == 404
+const (
+	Errors_USER_NOT_FOUND  = "ErrorReason_USER_NOT_FOUND"
+	Errors_CONTENT_MISSING = "ErrorReason_CONTENT_MISSING"
+)
+
+func IsUSER_NOT_FOUND(err error) bool {
+	return errors.Reason(err) == Errors_USER_NOT_FOUND
 }
 
-func ErrorUserNotFound(format string, args ...interface{}) *errors.Error {
-	return errors.New(404, ErrorReason_USER_NOT_FOUND.String(), fmt.Sprintf(format, args...))
-}
-
-func IsContentMissing(err error) bool {
-	e := errors.FromError(err)
-	return e.Reason == ErrorReason_CONTENT_MISSING.String() && e.Code == 400
-}
-
-func ErrorContentMissing(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, ErrorReason_CONTENT_MISSING.String(), fmt.Sprintf(format, args...))
+func IsCONTENT_MISSING(err error) bool {
+	return errors.Reason(err) == Errors_CONTENT_MISSING
 }

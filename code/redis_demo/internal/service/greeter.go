@@ -5,6 +5,7 @@ import (
 
 	v1 "redis_demo/api/helloworld/v1"
 	"redis_demo/internal/biz"
+
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -26,7 +27,18 @@ func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1
 	s.log.WithContext(ctx).Infof("SayHello Received: %v", in.GetName())
 
 	if in.GetName() == "error" {
-		return nil, v1.ErrorUserNotFound("user not found: %s", in.GetName())
+		// return nil, v1.ErrorUserNotFound("user not found: %s", in.GetName())
 	}
 	return &v1.HelloReply{Message: "Hello " + in.GetName()}, nil
+}
+
+// InsertRandomRedisData(context.Context, *v1.RRequest) (*v1.RReply, error)
+// SayHello implements helloworld.GreeterServer
+func (s *GreeterService) InsertRandomRedisData(ctx context.Context, in *v1.RRequest) (*v1.RReply, error) {
+	s.log.WithContext(ctx).Infof("InsertRandomRedisData Received:")
+	err := s.uc.InsertRedis(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.RReply{Message: "插入Redis成功"}, nil
 }

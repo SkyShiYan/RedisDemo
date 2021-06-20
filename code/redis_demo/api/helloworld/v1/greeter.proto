@@ -17,6 +17,12 @@ service Greeter {
             get: "/helloworld/{name}"
         };
     }
+
+  rpc insertRandomRedisData (RRequest) returns (RReply)  {
+    option (google.api.http) = {
+        get: "/insert"
+    };
+  }
 }
 
 // The request message containing the user's name.
@@ -26,5 +32,13 @@ message HelloRequest {
 
 // The response message containing the greetings
 message HelloReply {
+  string message = 1;
+}
+
+// The request message containing the user's name.
+message RRequest {}
+
+// The response message containing the greetings
+message RReply {
   string message = 1;
 }

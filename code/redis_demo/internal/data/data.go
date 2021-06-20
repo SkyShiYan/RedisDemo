@@ -13,16 +13,17 @@ var ProviderSet = wire.NewSet(NewData, NewGreeterRepo)
 
 // Data .
 type Data struct {
-	// TODO warpped database client 包含了数据库连接对象以及Redis连接对象
+	// warpped database client
 	rClient *redis.Client
 }
 
 // NewData .
 func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
+	// 创建Redis客户端
 	rClient := redis.NewClient(&redis.Options{
-		Addr:     "127.0.0.1:6379",
-		Password: "", // no password set
-		DB:       12, // use default DB
+		Addr:     "192.168.1.235:6379",
+		Password: "iam59!z$", // no password set
+		DB:       12,         // use default DB
 	})
 
 	cleanup := func() {
