@@ -23,7 +23,7 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 	rClient := redis.NewClient(&redis.Options{
 		Addr:     "192.168.1.235:6379",
 		Password: "iam59!z$", // no password set
-		DB:       12,         // use default DB
+		DB:       0,          // use default DB
 	})
 
 	cleanup := func() {

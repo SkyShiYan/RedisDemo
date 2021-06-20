@@ -25,7 +25,7 @@ type GreeterHTTPServer interface {
 func RegisterGreeterHTTPServer(s *http.Server, srv GreeterHTTPServer) {
 	r := s.Route("/")
 	r.GET("/helloworld/{name}", _Greeter_SayHello0_HTTP_Handler(srv))
-	r.GET("/insert", _Greeter_InsertRandomRedisData0_HTTP_Handler(srv))
+	r.GET("/insert/{rtype}", _Greeter_InsertRandomRedisData0_HTTP_Handler(srv))
 }
 
 func _Greeter_SayHello0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Context) error {
@@ -56,6 +56,9 @@ func _Greeter_InsertRandomRedisData0_HTTP_Handler(srv GreeterHTTPServer) func(ct
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
 		http.SetOperation(ctx, "/helloworld.v1.Greeter/InsertRandomRedisData")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.InsertRandomRedisData(ctx, req.(*RRequest))
@@ -84,7 +87,7 @@ func NewGreeterHTTPClient(client *http.Client) GreeterHTTPClient {
 
 func (c *GreeterHTTPClientImpl) InsertRandomRedisData(ctx context.Context, in *RRequest, opts ...http.CallOption) (*RReply, error) {
 	var out RReply
-	pattern := "/insert"
+	pattern := "/insert/{rtype}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/helloworld.v1.Greeter/InsertRandomRedisData"))
 	opts = append(opts, http.PathTemplate(pattern))

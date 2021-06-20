@@ -13,7 +13,7 @@ type Greeter struct {
 type GreeterRepo interface {
 	CreateGreeter(context.Context, *Greeter) error
 	UpdateGreeter(context.Context, *Greeter) error
-	InsertRedis(context.Context) error
+	InsertRedis(context.Context, int64) error
 }
 
 type GreeterUsecase struct {
@@ -33,6 +33,6 @@ func (uc *GreeterUsecase) Update(ctx context.Context, g *Greeter) error {
 	return uc.repo.UpdateGreeter(ctx, g)
 }
 
-func (uc *GreeterUsecase) InsertRedis(ctx context.Context) error {
-	return uc.repo.InsertRedis(ctx)
+func (uc *GreeterUsecase) InsertRedis(ctx context.Context, iType int64) error {
+	return uc.repo.InsertRedis(ctx, iType)
 }

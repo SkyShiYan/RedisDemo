@@ -36,7 +36,7 @@ func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1
 // SayHello implements helloworld.GreeterServer
 func (s *GreeterService) InsertRandomRedisData(ctx context.Context, in *v1.RRequest) (*v1.RReply, error) {
 	s.log.WithContext(ctx).Infof("InsertRandomRedisData Received:")
-	err := s.uc.InsertRedis(ctx)
+	err := s.uc.InsertRedis(ctx, in.GetRtype())
 	if err != nil {
 		return nil, err
 	}
